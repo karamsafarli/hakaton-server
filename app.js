@@ -51,7 +51,7 @@ app.post('/register', async (req, res) => {
 });
 
 app.get('/login', async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password } = req.query;
     try {
         const user = await User.find({ email: email });
 
