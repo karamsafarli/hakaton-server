@@ -45,15 +45,15 @@ app.post('/register', async (req, res) => {
         console.log(error)
         res.status(500).send("Something went wrong");
     }
-
-
-
 });
 
-app.get('/login', async (req, res) => {
-    const { email, password } = req.query;
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body;
     try {
-        const user = await User.find({ email: email });
+        const user = await User.findOne({ email: email });
+        console.log(user);
+        console.log(email);
+        console.log(password);
 
         if (!user) {
             return res.status(404).send("User not found");
