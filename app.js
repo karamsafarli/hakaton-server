@@ -59,7 +59,7 @@ app.get('/login', async (req, res) => {
             return res.status(404).send("User not found");
         }
 
-        if (password === user.password) {
+        if (password == user.password) {
             return res.status(200).json(user);
         } else {
             return res.status(503).send("Bad credentials");
