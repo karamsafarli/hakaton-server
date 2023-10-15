@@ -40,7 +40,7 @@ app.post('/register', async (req, res) => {
         await user.save();
 
         console.log(user);
-       return res.status(201).json(user);
+        return res.status(201).json(user);
     } catch (error) {
         console.log(error)
         res.status(500).send("Something went wrong");
@@ -48,4 +48,24 @@ app.post('/register', async (req, res) => {
 
 
 
+});
+
+app.get('/login', async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        const user = await User.find({ email: email });
+
+        if (!user) {
+            return res.status(404).send("User not found");
+        }
+
+        if (password === user.password) {
+            return res.status(200).json(user);
+        } else {
+            return res.status(503).send("Bad credentials");
+        }
+
+    } catch (error) {
+        return res.status(500).send("User cannot find");
+    }
 })
