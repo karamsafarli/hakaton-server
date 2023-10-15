@@ -21,6 +21,9 @@ mongoose.connect(process.env.MONGODB_URI.toString(), { useNewUrlParser: true, us
 app.get('/', (req, res) => {
     res.send("salam dostlar");
 });
+app.get('/salam', (req, res) => {
+    res.send("salam dostlar");
+});
 
 app.post('/register', async (req, res) => {
     console.log('post request');
