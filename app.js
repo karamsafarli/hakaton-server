@@ -13,6 +13,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 
+mongoose.set('strictQuery', false);
+
 mongoose.connect(process.env.MONGODB_URI.toString(), { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => app.listen(port, () => {
         console.log("App is listening")
