@@ -118,3 +118,7 @@ app.get('/scrape', async (req,res) => {
   console.log(data)
   res.status(200).json(data);
 })
+
+app.get('/hello', (req,res) => {
+    res.send("HELLO")
+})
