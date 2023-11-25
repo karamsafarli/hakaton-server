@@ -116,5 +116,5 @@ app.get('/getdata', async (req, res) => {
 app.get('/scrape', async (req,res) => {
   const data = await scrapeData('karam.safarli','SafarliK0452');
   console.log(data)
-  return res.json(data);
+  res.status(200).json(data);
 })
