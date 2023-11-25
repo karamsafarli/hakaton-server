@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 
 const scrapeData = async (username, password) => {
-    const browser = await puppeteer.launch({ headless: "new" });
+    const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
 
     await page.goto("http://lms.adnsu.az/adnsuEducation/login.jsp");
