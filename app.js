@@ -6,6 +6,7 @@ const app = express();
 const cors = require('cors');
 const mongoose = require('mongoose');
 const User = require('./models/userSchema');
+const scrapeData = require('./actions');
 
 const port = process.env.PORT || 3001;
 
@@ -20,12 +21,12 @@ mongoose.connect(process.env.MONGODB_URI.toString(), { useNewUrlParser: true, us
         console.log("App is listening")
     }))
 
-app.get('/', (req, res) => {
-    res.send("salam dostlar");
-});
-app.get('/salam', (req, res) => {
-    res.send("salam dostlar");
-});
+// app.get('/', (req, res) => {
+//     res.send("salam dostlar");
+// });
+// app.get('/salam', (req, res) => {
+//     res.send("salam dostlar");
+// });
 
 app.post('/register', async (req, res) => {
     console.log('post request');
@@ -68,4 +69,50 @@ app.post('/login', async (req, res) => {
     } catch (error) {
         return res.status(500).send("User cannot find");
     }
+})
+
+
+app.get('/getdata', async (req, res) => {
+    const body = {
+        username: 'nagi.nagiyev',
+        password: 'Nagi20033'
+    }
+    // res.cookie("JSESSIONID", "10BC658D3617ECF270AE589DE1C057C8");
+    // res.cookie("groupId", "1");
+    // res.cookie("parentId", "0");
+    try {
+        const response = await fetch('http://lms.adnsu.az/adnsuEducation/ls?action=login', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Referer": "http://lms.adnsu.az/adnsuEducation/login.jsp",
+                'neuron': '96C584E57DD8CD0E883F782F8438CCD8',
+                "Cookie": "parentId=0; groupId=1; JSESSIONID=10BC658D3617ECF270AE589DE1C057C8",
+            },
+            body: JSON.stringify(body),
+        });
+
+        console.log(response.headers)
+        const text = await response.text();
+        // console.log(text);
+
+        // const data = await response.json();
+
+        // let dataParsed;
+        // try {
+        //     dataParsed = JSON.parse()
+        // } catch (error) {
+        //     return res.status(500).json({ error: 'Non-JSON response received' });
+        // }
+
+        res.json(text);
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ error: error.message });
+    }
+})
+
+// LMS SCRAPER
+app.get('/scrape', async () => {
+   await scrapeData('karam.safarli','SafarliK0452');
 })
