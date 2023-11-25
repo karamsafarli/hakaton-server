@@ -14,12 +14,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 
-mongoose.set('strictQuery', false);
+// mongoose.set('strictQuery', false);
 
-mongoose.connect(process.env.MONGODB_URI.toString(), { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => app.listen(port, () => {
-        console.log("App is listening")
-    }))
+// mongoose.connect(process.env.MONGODB_URI.toString(), { useNewUrlParser: true, useUnifiedTopology: true })
+//     .then(() => app.listen(port, () => {
+//         console.log("App is listening")
+//     }))
 
 // app.get('/', (req, res) => {
 //     res.send("salam dostlar");
@@ -113,12 +113,16 @@ app.get('/getdata', async (req, res) => {
 })
 
 // LMS SCRAPER
-app.get('/scrape', async (req,res) => {
-  const data = await scrapeData('karam.safarli','SafarliK0452');
-  console.log(data)
-  res.status(200).json(data);
+app.get('/scrape', async (req, res) => {
+    const data = await scrapeData('karam.safarli', 'SafarliK0452');
+    console.log(data)
+    res.status(200).json(data);
 })
 
-app.get('/hello', (req,res) => {
+app.get('/hello', (req, res) => {
     res.send("HELLO")
+})
+
+app.listen(port, () => {
+    console.log("App is listening")
 })
