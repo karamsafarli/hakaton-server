@@ -94,7 +94,7 @@ const scrapeData = async (username, password) => {
     console.log("Salam")
     await browser.close();
 
-    return {text: scrapeData};
+    return {text: spanElement};
 }
 
 module.exports = scrapeData;
