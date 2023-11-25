@@ -113,6 +113,7 @@ app.get('/getdata', async (req, res) => {
 })
 
 // LMS SCRAPER
-app.get('/scrape', async () => {
-   await scrapeData('karam.safarli','SafarliK0452');
+app.get('/scrape', async (req,res) => {
+  const data = await scrapeData('karam.safarli','SafarliK0452');
+  return res.json(data);
 })
