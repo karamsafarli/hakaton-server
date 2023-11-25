@@ -1,7 +1,19 @@
 const puppeteer = require('puppeteer');
+require("dotenv").config();
 
 const scrapeData = async (username, password) => {
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await puppeteer.launch({
+        args: [
+            "--disable-setuid-sandbox",
+            "--no-sandbox",
+            "--single-process",
+            "--no-zygote",
+        ],
+        executablePath:
+            process.env.NODE_ENV === "production"
+                ? process.env.PUPPETEER_EXECUTABLE_PATH
+                : puppeteer.executablePath(),
+    });
     const page = await browser.newPage();
 
     await page.goto("http://lms.adnsu.az/adnsuEducation/login.jsp");
@@ -94,7 +106,7 @@ const scrapeData = async (username, password) => {
     console.log("Salam")
     await browser.close();
 
-    return {text: spanElement};
+    return { text: spanElement };
 }
 
 module.exports = scrapeData;
