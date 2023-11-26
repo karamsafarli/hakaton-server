@@ -1,4 +1,3 @@
-const puppeteer = require('puppeteer');
 require("dotenv").config();
 
 const scrapeData = async (username, password) => {
