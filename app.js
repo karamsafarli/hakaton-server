@@ -11,12 +11,15 @@ const path = require('path');
 const zlib = require('zlib');
 const mime = require('mime-types');
 const fs = require('fs');
+const compression = require('compression');
 
 const port = process.env.PORT || 3001;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
+app.use(compression());
+
 
 
 
