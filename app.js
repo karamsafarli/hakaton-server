@@ -9,6 +9,8 @@ const User = require('./models/userSchema');
 const scrapeData = require('./actions');
 const path = require('path');
 const zlib = require('zlib');
+const mime = require('mime-types');
+const fs = require('fs');
 
 const port = process.env.PORT || 3001;
 
@@ -16,22 +18,21 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 
-// app.use(express.static(path.join(__dirname, 'webgl')));
-// app.use(express.static(path.join(__dirname, 'webgl'), {
-//     setHeaders: (res, filePath) => {
-//         if (filePath.endsWith('.gz')) {
-//             res.setHeader('Content-Encoding', 'gzip');
-//             res.setHeader('Content-Type', 'application/javascript'); // Change MIME type as per your file type
-//         }
-//     },
-// }));
+
 
 app.use(express.static(path.join(__dirname, '/'), {
     setHeaders: (res, filePath) => {
-        if (filePath.endsWith('.gz')) {
+
+        // console.log(filePath)
+        if (filePath.endsWith('.wasm.gz')) {
+            console.log(filePath)
             res.setHeader('Content-Encoding', 'gzip');
-            res.setHeader('Content-Type', 'application/javascript'); // Change MIME type as per your file type
+            res.setHeader('Content-Type', 'application/wasm');
+        } else if (filePath.endsWith('.gz')) {
+            res.setHeader('Content-Encoding', 'gzip');
+            res.setHeader('Content-Type', 'application/javascript');
         }
+
     },
 }))
 
@@ -42,12 +43,10 @@ app.use(express.static(path.join(__dirname, '/'), {
 //         console.log("App is listening")
 //     }))
 
-// app.get('/', (req, res) => {
-//     res.send("salam dostlar");
-// });
-// app.get('/salam', (req, res) => {
-//     res.send("salam dostlar");
-// });
+app.get('/', (req, res) => {
+    res.send("salam dostlar");
+});
+
 
 app.post('/register', async (req, res) => {
     console.log('post request');
@@ -147,6 +146,8 @@ app.get('/hello', (req, res) => {
 app.get('/game', (req, res) => {
     res.sendFile(path.join(__dirname, "/index.html"))
 })
+
+
 
 app.listen(port, () => {
     console.log("App is listening")
