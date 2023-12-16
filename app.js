@@ -11,14 +11,14 @@ const path = require('path');
 const zlib = require('zlib');
 const mime = require('mime-types');
 const fs = require('fs');
-const compression = require('compression');
+// const compression = require('compression');
 
 const port = process.env.PORT || 3001;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
-app.use(compression());
+// app.use(compression());
 
 
 
@@ -26,14 +26,11 @@ app.use(compression());
 app.use(express.static(path.join(__dirname, '/'), {
     setHeaders: (res, filePath) => {
 
-        // console.log(filePath)
-        if (filePath.endsWith('.wasm.gz')) {
-            console.log(filePath)
-            res.setHeader('Content-Encoding', 'gzip');
-            res.setHeader('Content-Type', 'application/wasm');
-        } else if (filePath.endsWith('.gz')) {
-            res.setHeader('Content-Encoding', 'gzip');
-            res.setHeader('Content-Type', 'application/javascript');
+        if (filePath.endsWith(".gz")) {
+            res.set("Content-Encoding", "gzip");
+        }
+        if (filePath.includes("wasm")) {
+            res.set("Content-Type", "application/wasm");
         }
 
     },
@@ -152,6 +149,6 @@ app.get('/game', (req, res) => {
 
 
 
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
     console.log("App is listening")
 })
