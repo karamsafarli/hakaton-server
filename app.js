@@ -7,12 +7,33 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const User = require('./models/userSchema');
 const scrapeData = require('./actions');
+const path = require('path');
+const zlib = require('zlib');
 
 const port = process.env.PORT || 3001;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
+
+// app.use(express.static(path.join(__dirname, 'webgl')));
+// app.use(express.static(path.join(__dirname, 'webgl'), {
+//     setHeaders: (res, filePath) => {
+//         if (filePath.endsWith('.gz')) {
+//             res.setHeader('Content-Encoding', 'gzip');
+//             res.setHeader('Content-Type', 'application/javascript'); // Change MIME type as per your file type
+//         }
+//     },
+// }));
+
+app.use(express.static(path.join(__dirname, '/'), {
+    setHeaders: (res, filePath) => {
+        if (filePath.endsWith('.gz')) {
+            res.setHeader('Content-Encoding', 'gzip');
+            res.setHeader('Content-Type', 'application/javascript'); // Change MIME type as per your file type
+        }
+    },
+}))
 
 // mongoose.set('strictQuery', false);
 
@@ -121,6 +142,10 @@ app.get('/scrape', async (req, res) => {
 
 app.get('/hello', (req, res) => {
     res.send("HELLO")
+})
+
+app.get('/game', (req, res) => {
+    res.sendFile(path.join(__dirname, "/index.html"))
 })
 
 app.listen(port, () => {
