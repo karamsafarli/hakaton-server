@@ -11,6 +11,8 @@ const path = require('path');
 const zlib = require('zlib');
 const mime = require('mime-types');
 const fs = require('fs');
+const bodyParser = require('body-parser')
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 // const compression = require('compression');
 
 const port = process.env.PORT || 3001;
@@ -18,6 +20,8 @@ const port = process.env.PORT || 3001;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 // app.use(compression());
 
 
@@ -143,10 +147,49 @@ app.get('/hello', (req, res) => {
     res.send("HELLO")
 })
 
-app.get('/game', (req, res) => {
-    res.sendFile(path.join(__dirname, "/index.html"))
-})
+// app.get('/game', (req, res) => {
+//     res.sendFile(path.join(__dirname, "/index.html"))
+// })
 
+
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+// function fileToGenerativePart(path, mimeType) {
+//     return {
+//         inlineData: {
+//             data: Buffer.from(fs.readFileSync(path)).toString("base64"),
+//             mimeType
+//         },
+//     };
+// }
+
+// console.log(fileToGenerativePart())
+
+app.post('/gemini', async (req, res) => {
+
+    const { prompt, imageParts } = req.body;
+    // console.log(prompt, imageParts)
+    const modelName = imageParts.length > 0 ? "gemini-pro-vision" : "gemini-pro"
+    const model = genAI.getGenerativeModel({ model: modelName });
+
+    // const prompt = "What are differences between these images?";
+
+    // const imageParts = [
+    //     fileToGenerativePart("apple3.jpeg", "image/jpeg"),
+    //     fileToGenerativePart("green_apple.png", "image/png"),
+    // ];
+
+    const result = await model.generateContent([prompt, ...imageParts]);
+    const response = await result.response;
+    // let text = '';
+    // for await (const chunk of result.stream) {
+    //     const chunkText = chunk.text();
+    //     console.log(chunkText);
+    //     text += chunkText;
+    // }
+    const text = response.text();
+    res.status(201).json(text);
+    // console.log(text);
+})
 
 
 app.listen(port, '0.0.0.0', () => {
