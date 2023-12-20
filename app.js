@@ -157,15 +157,19 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 app.post('/gemini', async (req, res) => {
 
-    const { prompt, imageParts } = req.body;
-    // console.log(imageParts)
-    const modelName = imageParts.length > 0 ? "gemini-pro-vision" : "gemini-pro"
-    const model = genAI.getGenerativeModel({ model: modelName });
-    const data = imageParts.length > 0 ? [prompt, ...imageParts] : prompt;
-    const result = await model.generateContent(data);
-    const response = await result.response;
-    const text = response.text();
-    res.status(201).json(text);
+    try {
+        const { prompt, imageParts } = req.body;
+        // console.log(imageParts)
+        const modelName = imageParts.length > 0 ? "gemini-pro-vision" : "gemini-pro"
+        const model = genAI.getGenerativeModel({ model: modelName });
+        const data = imageParts.length > 0 ? [prompt, ...imageParts] : prompt;
+        const result = await model.generateContent(data);
+        const response = await result.response;
+        const text = response.text();
+        res.status(201).json(text);
+    } catch (error) {
+        console.log(error)
+    }
 })
 
 
