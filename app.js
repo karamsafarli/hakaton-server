@@ -20,16 +20,10 @@ const port = process.env.PORT || 3001;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: '100mb' }));
 app.use(cors());
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'https://gemini-chatbot-azure.vercel.app');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    next();
-});
+
 
 // app.use(bodyParser.json({ limit: '100mb' }));
 // app.use(bodyParser.urlencoded({ extended: true, limit: '100mb' }));
-// app.use(express.raw({ limit: '50mb' }));
 
 
 
