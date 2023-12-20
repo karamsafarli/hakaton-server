@@ -9,9 +9,11 @@
     {
       "src": "/(.*)",
       "dest": "/app.js",
-      "options": {
-        "maxDuration": 60,
-        "bodySizeLimit": "50mb"
+      "headers": {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "Content-Type",
+        "body-size-limit": "50mb"
       }
     }
   ]
