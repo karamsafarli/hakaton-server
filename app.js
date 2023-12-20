@@ -161,7 +161,8 @@ app.post('/gemini', async (req, res) => {
     // console.log(imageParts)
     const modelName = imageParts.length > 0 ? "gemini-pro-vision" : "gemini-pro"
     const model = genAI.getGenerativeModel({ model: modelName });
-    const result = await model.generateContent([prompt, ...imageParts]);
+    const data = imageParts.length > 0 ? [prompt, ...imageParts] : prompt;
+    const result = await model.generateContent(data);
     const response = await result.response;
     const text = response.text();
     res.status(201).json(text);
