@@ -10,7 +10,8 @@
       "src": "/(.*)",
       "dest": "/app.js",
       "options": {
-        "maxDuration": 60 
+        "maxDuration": 60,
+        "bodySizeLimit": "50mb"
       }
     }
   ],
